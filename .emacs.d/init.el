@@ -39,7 +39,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(treemacs-magit rust-mode magit eglot catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
+   '(rust-mode treemacs-magit magit eglot catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -50,8 +50,11 @@
 ;; activate packages
 (package-initialize)
 
+;; remap major modes with treesitter modes
+(add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
+
 ;; activate eglot
-(add-hook 'rust-mode-hook 'eglot-ensure)
+(add-hook 'rust-ts-mode-hook 'eglot-ensure)
 (add-hook 'bash-ts-mode-hook 'eglot-ensure)
 (add-hook 'emacs-lisp-mode-hook 'eglot-ensure)
 
@@ -86,7 +89,7 @@
 (add-hook 'lisp-mode-hook                        #'enable-paredit-mode)
 (add-hook 'lisp-interaction-mode-hook            #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook                      #'enable-paredit-mode)
-(add-hook 'rust-mode-hook                        #'enable-paredit-mode)
+(add-hook 'rust-ts-mode-hook                        #'enable-paredit-mode)
 
 ;; load theme
 (load-theme 'catppuccin :no-confirm)
