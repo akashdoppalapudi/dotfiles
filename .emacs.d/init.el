@@ -57,6 +57,7 @@
 (add-hook 'rust-ts-mode-hook 'eglot-ensure)
 (add-hook 'bash-ts-mode-hook 'eglot-ensure)
 (add-hook 'emacs-lisp-mode-hook 'eglot-ensure)
+(add-hook 'html-mode-hook 'eglot-ensure)
 
 ;; auto format on save
 (add-hook 'before-save-hook 'eglot-format-buffer)
