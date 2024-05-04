@@ -39,7 +39,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(rust-mode treemacs-magit magit eglot catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
+   '(company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit eglot catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -57,7 +57,10 @@
 (add-hook 'rust-ts-mode-hook 'eglot-ensure)
 (add-hook 'bash-ts-mode-hook 'eglot-ensure)
 (add-hook 'emacs-lisp-mode-hook 'eglot-ensure)
-(add-hook 'html-mode-hook 'eglot-ensure)
+
+;; activate lsp
+(require 'lsp-mode)
+(add-hook 'web-mode-hook #'lsp)
 
 ;; auto format on save
 (add-hook 'before-save-hook 'eglot-format-buffer)
@@ -90,7 +93,30 @@
 (add-hook 'lisp-mode-hook                        #'enable-paredit-mode)
 (add-hook 'lisp-interaction-mode-hook            #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook                      #'enable-paredit-mode)
-(add-hook 'rust-ts-mode-hook                        #'enable-paredit-mode)
+(add-hook 'rust-ts-mode-hook                     #'enable-paredit-mode)
+
+;; web development
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+
+(defun my-web-mode-hook ()
+  (set (make-local-variable 'company-backends) '(company-css company-web-html company-yasnippet company-files))
+)
+(add-hook 'web-mode-hook 'my-web-mode-hook)
+(add-hook 'web-mode-hook 'emmet-mode)
+
+(add-hook 'web-mode-before-auto-complete-hooks
+          '(lambda ()
+             (let ((web-mode-cur-language
+  	                (web-mode-language-at-pos)))
+               (if (string= web-mode-cur-language "php")
+    	           (yas-activate-extra-mode 'php-mode)
+      	         (yas-deactivate-extra-mode 'php-mode))
+               (if (string= web-mode-cur-language "css")
+    	           (setq emmet-use-css-transform t)
+      	         (setq emmet-use-css-transform nil)))))
 
 ;; load theme
 (load-theme 'catppuccin :no-confirm)
