@@ -4,7 +4,7 @@
 ;; disable tools on startup
 (tool-bar-mode -1)
 
-;; disable scroll bar on startup
+;; Disable scroll bar on startup
 (toggle-scroll-bar -1)
 
 ;; hide welcome screen
@@ -52,11 +52,16 @@
 
 ;; remap major modes with treesitter modes
 (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
 
 ;; activate eglot
 (add-hook 'rust-ts-mode-hook 'eglot-ensure)
 (add-hook 'bash-ts-mode-hook 'eglot-ensure)
 (add-hook 'emacs-lisp-mode-hook 'eglot-ensure)
+(add-hook 'c-ts-mode-hook 'eglot-ensure)
+(add-hook 'c++-ts-mode-hook 'eglot-ensure)
+(add-hook 'cmake-ts-mode-hook 'eglot-ensure)
 
 ;; activate lsp
 (require 'lsp-mode)
@@ -101,9 +106,12 @@
 (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
 
+;; CMakelists.txt activate cmake-ts-mode
+(add-to-list 'auto-mode-alist '("CMakeLists.txt" . cmake-ts-mode))
+
 (defun my-web-mode-hook ()
   (set (make-local-variable 'company-backends) '(company-css company-web-html company-yasnippet company-files))
-)
+  )
 (add-hook 'web-mode-hook 'my-web-mode-hook)
 (add-hook 'web-mode-hook 'emmet-mode)
 
