@@ -42,7 +42,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(fountain-mode company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit eglot catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
+   '(all-the-icons fountain-mode company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit eglot catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -52,6 +52,15 @@
 
 ;; activate packages
 (package-initialize)
+
+(require 'all-the-icons)
+
+(require 'centaur-tabs)
+(centaur-tabs-mode t)
+(setq centaur-tabs-set-icons t)
+(setq centaur-tabs-plain-icons t)
+(setq centaur-tabs-set-modified-marker t)
+(setq centaur-tabs-height 32)
 
 ;; remap major modes with treesitter modes
 (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
