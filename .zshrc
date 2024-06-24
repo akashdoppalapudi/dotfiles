@@ -120,6 +120,7 @@ function gitconf () {
     git config user.email "$1"
     git config user.signingkey "$PGPFP"
     git config commit.gpgsign true
+    git maintenance start
     echo "Git Config Done"
   fi
 }
