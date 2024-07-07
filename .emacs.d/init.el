@@ -148,6 +148,12 @@
     	           (setq emmet-use-css-transform t)
       	         (setq emmet-use-css-transform nil)))))
 
+;; Code action keybindings
+(global-set-key (kbd "C-c C-k") 'comment-region)
+(global-set-key (kbd "C-c C-u") 'uncomment-region)
+(global-set-key (kbd "C-c C-h") 'eldoc)
+(global-set-key (kbd "C-c C-d") 'xref-find-definitions)
+
 ;; load theme
 (load-theme 'catppuccin :no-confirm)
 
