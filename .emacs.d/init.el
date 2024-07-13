@@ -41,6 +41,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-directory "~/Documents/org")
+ '(org-agenda-files (list org-directory))
  '(package-selected-packages
    '(all-the-icons fountain-mode company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit eglot catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
 (custom-set-faces
@@ -153,6 +155,10 @@
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
 (global-set-key (kbd "C-c C-h") 'eldoc)
 (global-set-key (kbd "C-c C-d") 'xref-find-definitions)
+
+;; Org Agenda custmization
+(global-set-key (kbd "C-c a") 'org-agenda)
+(setq org-log-done t)
 
 ;; load theme
 (load-theme 'catppuccin :no-confirm)
