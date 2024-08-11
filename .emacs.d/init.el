@@ -15,7 +15,7 @@
 (setq create-lockfiles nil)
 
 ;; set font
-(set-face-attribute 'default nil :font "-JB-JetBrainsMono Nerd Font Mono-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1" :height 120)
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 120)
 
 ;; enable line numbers and column number
 (global-display-line-numbers-mode t)
@@ -41,10 +41,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-directory "~/Documents/org")
  '(org-agenda-files (list org-directory))
+ '(org-directory "~/Documents/org")
  '(package-selected-packages
-   '(all-the-icons fountain-mode company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit eglot catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
+   '(eglot all-the-icons fountain-mode company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

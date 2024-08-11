@@ -105,6 +105,9 @@ source $ZSH/oh-my-zsh.sh
 
 # Exports
 export PGPFP="C8B2A95D8D855A9D8C6F0C78BCBCAE31ECE05007"
+export AUTHKG="48051123C3F3501EA7ED64A8DA122DBB37F5FD05"
+export SIGNKG="07EDAF8F1E00C38D93072109992B63E9C4D1950C"
+export ENCRKG="0D31933C2A7DF0A41B78B58F842485C141BA58C9"
 export EDITOR=vim
 export AKASHDEMAIL="akashdoppalapudi2001@gmail.com"
 export AKASHTERSEMAIL="akash@ters.dev"
@@ -118,7 +121,7 @@ function gitconf () {
   else
     git config user.name "Akash Doppalapudi"
     git config user.email "$1"
-    git config user.signingkey "$PGPFP"
+    git config user.signingkey "$SIGNKG"
     git config commit.gpgsign true
     git maintenance start
     echo "Git Config Done"
@@ -140,7 +143,12 @@ function gpgbkp () {
     echo "Backup of GPG keys created in $dir_name"
 }
 
-
+function gpgsend () {
+	for i in pgpkeys.eu keys.openpgp.org keyserver.ubuntu.com the.earth.li;
+       	do
+	    	gpg --keyserver $i --send-key $PGPFP;
+	done
+}
 
 # NVM
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
