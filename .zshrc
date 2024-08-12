@@ -105,9 +105,9 @@ source $ZSH/oh-my-zsh.sh
 
 # Exports
 export PGPFP="C8B2A95D8D855A9D8C6F0C78BCBCAE31ECE05007"
-export AUTHKG="48051123C3F3501EA7ED64A8DA122DBB37F5FD05"
-export SIGNKG="07EDAF8F1E00C38D93072109992B63E9C4D1950C"
-export ENCRKG="0D31933C2A7DF0A41B78B58F842485C141BA58C9"
+export AUTHKG="4E07361B520AE5B9FEA11631D90CBF33A1A76808"
+export SIGNKG="66EFDAD975EC0BF9BAA9639A8A3084026B5BE960"
+export ENCRKG="4B9C012548305641A58F8BCB144302900BDA4253"
 export EDITOR=vim
 export AKASHDEMAIL="akashdoppalapudi2001@gmail.com"
 export AKASHTERSEMAIL="akash@ters.dev"
@@ -146,7 +146,7 @@ function gpgbkp () {
 function gpgsend () {
 	for i in pgpkeys.eu keys.openpgp.org keyserver.ubuntu.com the.earth.li;
        	do
-	    	gpg --keyserver $i --send-key $PGPFP;
+	    	gpg --keyserver $i --send-keys $PGPFP;
 	done
 }
 
