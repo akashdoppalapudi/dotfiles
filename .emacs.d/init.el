@@ -44,7 +44,7 @@
  '(org-agenda-files (list org-directory))
  '(org-directory "~/Documents/org")
  '(package-selected-packages
-   '(haskell-mode eglot all-the-icons fountain-mode company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
+   '(yaml-mode haskell-mode eglot all-the-icons fountain-mode company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -68,6 +68,7 @@
 (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
 (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
 (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+(add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))
 
 ;; activate eglot
 (add-hook 'rust-ts-mode-hook 'eglot-ensure)
@@ -81,6 +82,7 @@
 (add-hook 'js-ts-mode-hook 'eglot-ensure)
 (add-hook 'dockerfile-ts-mode-hook 'eglot-ensure)
 (add-hook 'haskell-mode-hook 'eglot-ensure)
+(add-hook 'yaml-ts-mode-hook 'eglot-ensure)
 
 ;; activate lsp
 (require 'lsp-mode)
