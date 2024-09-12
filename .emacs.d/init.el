@@ -69,6 +69,7 @@
 (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
 (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
 (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))
+(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 
 ;; activate eglot
 (add-hook 'rust-ts-mode-hook 'eglot-ensure)
@@ -83,6 +84,7 @@
 (add-hook 'dockerfile-ts-mode-hook 'eglot-ensure)
 (add-hook 'haskell-mode-hook 'eglot-ensure)
 (add-hook 'yaml-ts-mode-hook 'eglot-ensure)
+(add-hook 'python-ts-mode-hook 'eglot-ensure)
 
 ;; activate lsp
 (require 'lsp-mode)
