@@ -71,6 +71,7 @@
 (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 
+;; Turn off eglot logging
 (setq eglot-events-buffer-size 0)
 
 ;; activate eglot
