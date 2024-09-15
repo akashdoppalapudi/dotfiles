@@ -71,6 +71,8 @@
 (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 
+(setq eglot-events-buffer-size 0)
+
 ;; activate eglot
 (add-hook 'rust-ts-mode-hook 'eglot-ensure)
 (add-hook 'bash-ts-mode-hook 'eglot-ensure)
