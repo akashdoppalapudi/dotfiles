@@ -112,6 +112,7 @@ export EDITOR=vim
 export AKASHDEMAIL="akashdoppalapudi2001@gmail.com"
 export AKASHTERSEMAIL="akash@ters.dev"
 export GPG_TTY=$(tty)
+export PATH=~/.dotnet/tools:$PATH
 
 # Functions
 
@@ -157,3 +158,7 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 
 [ -f "/home/akash/.ghcup/env" ] && . "/home/akash/.ghcup/env" # ghcup-env
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
