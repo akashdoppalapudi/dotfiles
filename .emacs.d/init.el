@@ -29,6 +29,7 @@
 
 ;; set word-wrap
 (setq word-wrap t)
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
 ;; save command-history
 (savehist-mode)
@@ -44,7 +45,7 @@
  '(org-agenda-files (list org-directory))
  '(org-directory "~/Documents/org")
  '(package-selected-packages
-   '(dpkg-dev-el yaml-mode haskell-mode eglot all-the-icons fountain-mode company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
+   '(ebnf-mode dpkg-dev-el yaml-mode haskell-mode eglot all-the-icons fountain-mode company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -164,6 +165,22 @@
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
 (global-set-key (kbd "C-c C-h") 'eldoc)
 (global-set-key (kbd "C-c C-d") 'xref-find-definitions)
+
+;; transpose lines
+(defun move-line-up ()
+  (interactive)
+  (transpose-lines 1)
+  (previous-line 2))
+
+(defun move-line-down ()
+  (interactive)
+  (next-line 1)
+  (transpose-lines 1)
+  (previous-line 1))
+
+(global-set-key (kbd "M-<up>") 'move-line-up)
+(global-set-key (kbd "M-<down>") 'move-line-down)
+
 
 ;; Org Agenda custmization
 (global-set-key (kbd "C-c a") 'org-agenda)
