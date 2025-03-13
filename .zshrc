@@ -102,7 +102,6 @@ source $ZSH/oh-my-zsh.sh
 
 # Aliases
 
-
 # Exports
 export PGPFP="C8B2A95D8D855A9D8C6F0C78BCBCAE31ECE05007"
 export AUTHKG="4E07361B520AE5B9FEA11631D90CBF33A1A76808"
@@ -113,6 +112,10 @@ export AKASHDEMAIL="akashdoppalapudi2001@gmail.com"
 export AKASHTERSEMAIL="akash@ters.dev"
 export GPG_TTY=$(tty)
 export PATH=~/.dotnet/tools:$PATH
+export ANDROID_HOME=~/Android/Sdk
+export PATH=$ANDROID_HOME/bin:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-23-openjdk
+export PATH=$(go env GOPATH)/bin:$PATH
 
 # Functions
 

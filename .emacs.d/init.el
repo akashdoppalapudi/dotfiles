@@ -15,7 +15,7 @@
 (setq create-lockfiles nil)
 
 ;; set font
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 120)
+(set-face-attribute 'default nil :font "FiraCode Nerd Font" :height 120)
 
 ;; enable line numbers and column number
 (global-display-line-numbers-mode t)
@@ -45,7 +45,13 @@
  '(org-agenda-files (list org-directory))
  '(org-directory "~/Documents/org")
  '(package-selected-packages
-   '(ebnf-mode dpkg-dev-el yaml-mode haskell-mode eglot all-the-icons fountain-mode company-web yasnippet prettier markdown-mode js2-mode web-mode emmet-mode lsp-mode rust-mode treemacs-magit magit catppuccin-theme centaur-tabs paredit company vterm vterm-toggle treemacs treemacs-nerd-icons)))
+   '(all-the-icons catppuccin-theme centaur-tabs company company-web
+                   dpkg-dev-el ebnf-mode eglot emmet-mode
+                   fountain-mode go-mode haskell-mode js2-mode
+                   lsp-mode magit markdown-mode paredit prettier
+                   protobuf-mode rust-mode treemacs treemacs-magit
+                   treemacs-nerd-icons vterm vterm-toggle web-mode
+                   yaml-mode yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -71,6 +77,7 @@
 (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
 (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+(add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
 
 ;; Turn off eglot logging
 (setq eglot-events-buffer-size 0)
@@ -90,6 +97,7 @@
 (add-hook 'yaml-ts-mode-hook 'eglot-ensure)
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
 (add-hook 'csharp-mode-hook 'eglot-ensure)
+(add-hook 'go-ts-mode-hook 'eglot-ensure)
 
 ;; activate lsp
 (require 'lsp-mode)
