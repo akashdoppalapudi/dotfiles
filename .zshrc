@@ -162,6 +162,12 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 [ -f "/home/akash/.ghcup/env" ] && . "/home/akash/.ghcup/env" # ghcup-env
 
+# Pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+
+eval "$(pyenv init -)"
 
 # Load Angular CLI autocompletion.
 source <(ng completion script)
