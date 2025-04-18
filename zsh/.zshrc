@@ -111,11 +111,6 @@ export EDITOR=vim
 export AKASHDEMAIL="akashdoppalapudi2001@gmail.com"
 export AKASHTERSEMAIL="akash@ters.dev"
 export GPG_TTY=$(tty)
-export PATH=~/.dotnet/tools:$PATH
-export ANDROID_HOME=~/Android/Sdk
-export PATH=$ANDROID_HOME/bin:$PATH
-export JAVA_HOME=/usr/lib/jvm/java-23-openjdk
-export PATH=$(go env GOPATH)/bin:$PATH
 
 # Functions
 
@@ -154,20 +149,3 @@ function gpgsend () {
 	done
 }
 
-# NVM
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-[ -f "/home/akash/.ghcup/env" ] && . "/home/akash/.ghcup/env" # ghcup-env
-
-# Pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-
-eval "$(pyenv init -)"
-
-# Load Angular CLI autocompletion.
-source <(ng completion script)
