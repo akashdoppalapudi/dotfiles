@@ -101,6 +101,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Aliases
+alias pubip="curl https://ip.theakash.dev"
 
 # Exports
 export PGPFP="C8B2A95D8D855A9D8C6F0C78BCBCAE31ECE05007"
@@ -111,6 +112,7 @@ export EDITOR=vim
 export AKASHDEMAIL="akashdoppalapudi2001@gmail.com"
 export AKASHTERSEMAIL="akash@ters.dev"
 export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 # Functions
 
@@ -148,4 +150,8 @@ function gpgsend () {
 	    	gpg --keyserver $i --send-keys $PGPFP;
 	done
 }
+
+
+# GPG Conf
+gpgconf --launch gpg-agent
 

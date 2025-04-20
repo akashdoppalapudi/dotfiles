@@ -62,6 +62,15 @@
 ;; activate packages
 (package-initialize)
 
+;; --- Automatic Package Installation ---
+;; Install packages listed in 'package-selected-packages' if they are missing.
+;; This code runs *after* custom-set-variables has been evaluated.
+(when (boundp 'package-selected-packages) ; Check if the variable is defined
+  (dolist (pkg package-selected-packages) ; Iterate over the variable's value
+    (unless (package-installed-p pkg)
+      (message "Auto-installing missing package: %s" pkg) ; Informative message
+      (package-install pkg))))
+
 (require 'all-the-icons)
 
 (require 'centaur-tabs)
