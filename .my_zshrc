@@ -1,0 +1,60 @@
+##################################################
+# MY ZSHRC ETENSION
+# Source this in .zshrc file to get custom aliases
+##################################################
+
+# Aliases
+alias pubip="curl https://ip.theakash.dev"
+
+# Exports
+export PGPFP="C8B2A95D8D855A9D8C6F0C78BCBCAE31ECE05007"
+export AUTHKG="4E07361B520AE5B9FEA11631D90CBF33A1A76808"
+export SIGNKG="66EFDAD975EC0BF9BAA9639A8A3084026B5BE960"
+export ENCRKG="4B9C012548305641A58F8BCB144302900BDA4253"
+export EDITOR=vim
+export AKASHDEMAIL="akashdoppalapudi2001@gmail.com"
+export AKASHTERSEMAIL="akash@ters.dev"
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+# Functions
+
+function gitconf () {
+  if [ $# -eq 0 ]; then
+    echo "Email Kudasai."
+  else
+    git config user.name "Akash Doppalapudi"
+    git config user.email "$1"
+    git config user.signingkey "$SIGNKG"
+    git config commit.gpgsign true
+    git maintenance start
+    echo "Git Config Done"
+  fi
+}
+
+function gpgbkp () {
+    current_datetime=$(date +%Y-%m-%d_%H-%M-%S)
+    dir_name="gpg-backup-$current_datetime"
+
+    # Create a directory
+    mkdir $dir_name
+
+    # Backup GPG keys
+    gpg --export --armor > $dir_name/public-keys.asc
+    gpg --export-secret-keys --armor > $dir_name/private-keys.asc
+    gpg --export-ownertrust > $dir_name/ownertrust-gpg.txt
+
+    echo "Backup of GPG keys created in $dir_name"
+}
+
+function gpgsend () {
+	for i in pgpkeys.eu keys.openpgp.org keyserver.ubuntu.com the.earth.li;
+       	do
+	    	gpg --keyserver $i --send-keys $PGPFP;
+	done
+}
+
+
+# GPG Conf
+gpgconf --launch gpg-agent
+
