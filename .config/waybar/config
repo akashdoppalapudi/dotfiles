@@ -26,17 +26,17 @@
     ],
     "modules-center": [
         //"hyprland/window"
-        "clock#date",
-        "custom/weather"
+        "clock#date"
+        //"custom/weather"
         //"custom/gammastep"
     ],
     "modules-right": [
         "backlight",
-	"wireplumber",
+	    "wireplumber",
         "custom/storage",
         "memory",
         "cpu",
-	"network",
+	    "network",
         "battery",
         //"pulseaudio",
         "custom/screenshot_t",
