@@ -46,7 +46,7 @@
  '(org-directory "~/Documents/org")
  '(package-selected-packages
    '(all-the-icons catppuccin-theme centaur-tabs company company-web
-                   dpkg-dev-el ebnf-mode eglot emmet-mode
+                   dpkg-dev-el ebnf-mode eglot eldoc-box emmet-mode
                    fountain-mode go-mode haskell-mode js2-mode
                    lsp-mode magit markdown-mode paredit prettier
                    protobuf-mode rust-mode treemacs treemacs-magit
@@ -117,6 +117,10 @@
 
 ;; company mode
 (add-hook 'after-init-hook 'global-company-mode)
+
+;; enable eldoc-box
+(require 'eldoc-box)
+(add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
 
 ;; treemacs setup
 (global-set-key (kbd "s-T") 'treemacs)

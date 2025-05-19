@@ -16,6 +16,7 @@ export AKASHDEMAIL="akashdoppalapudi2001@gmail.com"
 export AKASHTERSEMAIL="akash@ters.dev"
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 # Functions
 
@@ -54,7 +55,18 @@ function gpgsend () {
 	done
 }
 
+function rundebsid() {
+	docker run -it --privileged -v debain-sid:/root --name debian-sid -d debian:sid
+}
+
+function enterdebsid() {
+	docker exec -it debian-sid /bin/bash
+}
+
 
 # GPG Conf
 gpgconf --launch gpg-agent
+
+# pyenv conf
+eval "$(pyenv init --path)"
 
