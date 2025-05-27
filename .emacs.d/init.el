@@ -49,9 +49,9 @@
                    dpkg-dev-el ebnf-mode eglot eldoc-box emmet-mode
                    fountain-mode go-mode haskell-mode js2-mode
                    lsp-mode magit markdown-mode paredit prettier
-                   protobuf-mode rust-mode treemacs treemacs-magit
-                   treemacs-nerd-icons vterm vterm-toggle web-mode
-                   yaml-mode yasnippet)))
+                   protobuf-mode rust-mode solaire-mode treemacs
+                   treemacs-magit treemacs-nerd-icons vterm
+                   vterm-toggle web-mode yaml-mode yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -148,6 +148,7 @@
 (add-hook 'lisp-interaction-mode-hook            #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook                      #'enable-paredit-mode)
 (add-hook 'rust-ts-mode-hook                     #'enable-paredit-mode)
+(add-hook 'go-ts-mode                            #'enable-paredit-mode)
 
 ;; web development
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
@@ -209,4 +210,5 @@
 
 ;; load theme
 (load-theme 'catppuccin :no-confirm)
+(solaire-global-mode t)
 
