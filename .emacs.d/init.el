@@ -45,13 +45,13 @@
  '(org-agenda-files (list org-directory))
  '(org-directory "~/Documents/org")
  '(package-selected-packages
-   '(all-the-icons catppuccin-theme centaur-tabs company company-web
-                   dpkg-dev-el ebnf-mode eglot eldoc-box emmet-mode
-                   fountain-mode go-mode haskell-mode js2-mode
-                   lsp-mode magit markdown-mode paredit prettier
-                   protobuf-mode rust-mode solaire-mode treemacs
-                   treemacs-magit treemacs-nerd-icons vterm
-                   vterm-toggle web-mode yaml-mode yasnippet)))
+   '(all-the-icons catppuccin-theme centaur-tabs company dpkg-dev-el
+                   ebnf-mode eglot eldoc-box emmet-mode fountain-mode
+                   go-mode haskell-mode js2-mode magit markdown-mode
+                   paredit prettier protobuf-mode rust-mode
+                   solaire-mode treemacs treemacs-magit
+                   treemacs-nerd-icons vterm vterm-toggle yaml-mode
+                   yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -107,10 +107,7 @@
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
 (add-hook 'csharp-mode-hook 'eglot-ensure)
 (add-hook 'go-ts-mode-hook 'eglot-ensure)
-
-;; activate lsp
-(require 'lsp-mode)
-(add-hook 'web-mode-hook #'lsp)
+(add-hook 'html-mode-hook 'eglot-ensure)
 
 ;; auto format on save
 (add-hook 'before-save-hook 'eglot-format-buffer)
@@ -120,7 +117,7 @@
 
 ;; enable eldoc-box
 (require 'eldoc-box)
-(add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
+(add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
 
 ;; treemacs setup
 (global-set-key (kbd "s-T") 'treemacs)
@@ -153,10 +150,10 @@
 ;; web development
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . tsx-ts-mode))
+
+(add-hook 'html-mode-hook 'emmet-mode)
 
 ;; other file extension mode mapping
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
@@ -164,23 +161,6 @@
 
 ;; CMakelists.txt activate cmake-ts-mode
 (add-to-list 'auto-mode-alist '("CMakeLists.txt" . cmake-ts-mode))
-
-(defun my-web-mode-hook ()
-  (set (make-local-variable 'company-backends) '(company-css company-web-html company-yasnippet company-files))
-  )
-(add-hook 'web-mode-hook 'my-web-mode-hook)
-(add-hook 'web-mode-hook 'emmet-mode)
-
-(add-hook 'web-mode-before-auto-complete-hooks
-          (lambda ()
-             (let ((web-mode-cur-language
-  	                (web-mode-language-at-pos)))
-               (if (string= web-mode-cur-language "php")
-    	           (yas-activate-extra-mode 'php-mode)
-      	         (yas-deactivate-extra-mode 'php-mode))
-               (if (string= web-mode-cur-language "css")
-    	           (setq emmet-use-css-transform t)
-      	         (setq emmet-use-css-transform nil)))))
 
 ;; Code action keybindings
 (global-set-key (kbd "C-c C-k") 'comment-region)
