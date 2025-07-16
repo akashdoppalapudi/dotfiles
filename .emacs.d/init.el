@@ -45,11 +45,11 @@
  '(org-agenda-files (list org-directory))
  '(org-directory "~/Documents/org")
  '(package-selected-packages
-   '(all-the-icons catppuccin-theme centaur-tabs company dpkg-dev-el
-                   ebnf-mode eglot eldoc-box emmet-mode fountain-mode
-                   go-mode haskell-mode js2-mode magit markdown-mode
-                   paredit prettier protobuf-mode rust-mode
-                   solaire-mode treemacs treemacs-magit
+   '(all-the-icons catppuccin-theme centaur-tabs company copilot
+                   dpkg-dev-el ebnf-mode eglot eldoc-box emmet-mode
+                   fountain-mode go-mode haskell-mode js2-mode magit
+                   markdown-mode paredit prettier protobuf-mode
+                   rust-mode solaire-mode treemacs treemacs-magit
                    treemacs-nerd-icons vterm vterm-toggle yaml-mode
                    yasnippet)))
 (custom-set-faces
@@ -119,6 +119,12 @@
 (require 'eldoc-box)
 (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
 
+;; enable copilot
+(require 'copilot)
+(add-hook 'prog-mode-hook 'copilot-mode)
+(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+
 ;; treemacs setup
 (global-set-key (kbd "s-T") 'treemacs)
 (global-set-key (kbd "s-C") 'treemacs-add-and-display-current-project-exclusively)
@@ -161,6 +167,7 @@
 
 ;; CMakelists.txt activate cmake-ts-mode
 (add-to-list 'auto-mode-alist '("CMakeLists.txt" . cmake-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-ts-mode))
 
 ;; Code action keybindings
 (global-set-key (kbd "C-c C-k") 'comment-region)
@@ -180,6 +187,7 @@
   (transpose-lines 1)
   (previous-line 1))
 
+;; Keybindings for moving lines up/down
 (global-set-key (kbd "M-<up>") 'move-line-up)
 (global-set-key (kbd "M-<down>") 'move-line-down)
 
