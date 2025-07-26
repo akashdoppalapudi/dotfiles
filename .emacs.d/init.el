@@ -45,7 +45,7 @@
  '(org-agenda-files (list org-directory))
  '(org-directory "~/Documents/org")
  '(package-selected-packages
-   '(all-the-icons catppuccin-theme centaur-tabs company copilot
+   '(all-the-icons blamer catppuccin-theme centaur-tabs company copilot
                    dpkg-dev-el ebnf-mode eglot eldoc-box emmet-mode
                    fountain-mode go-mode haskell-mode js2-mode magit
                    markdown-mode paredit prettier protobuf-mode
@@ -191,6 +191,13 @@
 (global-set-key (kbd "M-<up>") 'move-line-up)
 (global-set-key (kbd "M-<down>") 'move-line-down)
 
+;; Blamer
+(require 'blamer)
+(with-eval-after-load 'blamer
+  (set-face-attribute 'blamer-face nil
+                      :inherit 'font-lock-comment-face
+                      :italic t))
+(global-blamer-mode 1)
 
 ;; Org Agenda custmization
 (global-set-key (kbd "C-c a") 'org-agenda)
