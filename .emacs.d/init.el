@@ -34,51 +34,29 @@
 ;; save command-history
 (savehist-mode)
 
-;; setup-melpa
+;; setup melpa
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files (list org-directory))
- '(org-directory "~/Documents/org")
- '(package-selected-packages
-   '(all-the-icons blamer catppuccin-theme centaur-tabs company copilot
-                   dpkg-dev-el ebnf-mode eglot eldoc-box emmet-mode
-                   fountain-mode go-mode haskell-mode js2-mode magit
-                   markdown-mode paredit prettier protobuf-mode
-                   rust-mode solaire-mode treemacs treemacs-magit
-                   treemacs-nerd-icons vterm vterm-toggle yaml-mode
-                   yasnippet)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+        ("gnu" . "https://elpa.gnu.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 
 ;; activate packages
 (package-initialize)
 
-;; --- Automatic Package Installation ---
-;; Install packages listed in 'package-selected-packages' if they are missing.
-;; This code runs *after* custom-set-variables has been evaluated.
-(when (boundp 'package-selected-packages) ; Check if the variable is defined
-  (dolist (pkg package-selected-packages) ; Iterate over the variable's value
-    (unless (package-installed-p pkg)
-      (message "Auto-installing missing package: %s" pkg) ; Informative message
-      (package-install pkg))))
+;; All the icons
+(use-package all-the-icons
+  :ensure t)
 
-(require 'all-the-icons)
-
-(require 'centaur-tabs)
-(centaur-tabs-mode t)
-(setq centaur-tabs-set-icons t)
-(setq centaur-tabs-plain-icons t)
-(setq centaur-tabs-set-modified-marker t)
-(setq centaur-tabs-height 32)
+;; Centaur Tabs
+(use-package centaur-tabs
+  :ensure t
+  :config
+  (centaur-tabs-mode t)
+  (setq centaur-tabs-set-icons t)
+  (setq centaur-tabs-plain-icons t)
+  (setq centaur-tabs-set-modified-marker t)
+  (setq centaur-tabs-height 32))
 
 ;; remap major modes with treesitter modes
 (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
@@ -88,70 +66,91 @@
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
 
-;; Turn off eglot logging
-(setq eglot-events-buffer-size 0)
+;; Setup Eglot
+(use-package eglot
+  ;; no ensure is needed as eglot is built-in
+  :init
+  (setq eglot-events-buffer-size 0)
+  :hook
+  ((rust-ts-mode
+    bash-ts-mode
+    emcas-lisp-mode
+    c-ts-mode
+    c++-ts-mode
+    cmake-ts-mode
+    typescript-ts-mode
+    tsx-ts-mode
+    js-ts-mode
+    dockerfile-ts-mode
+    haskell-mode
+    yaml-ts-mode
+    python-ts-mode
+    csharp-mode
+    go-ts-mode
+    html-mode) . eglot-ensure)
+  (before-save-hook . eglot-format-buffer))
 
-;; activate eglot
-(add-hook 'rust-ts-mode-hook 'eglot-ensure)
-(add-hook 'bash-ts-mode-hook 'eglot-ensure)
-(add-hook 'emacs-lisp-mode-hook 'eglot-ensure)
-(add-hook 'c-ts-mode-hook 'eglot-ensure)
-(add-hook 'c++-ts-mode-hook 'eglot-ensure)
-(add-hook 'cmake-ts-mode-hook 'eglot-ensure)
-(add-hook 'typescript-ts-mode-hook 'eglot-ensure)
-(add-hook 'tsx-ts-mode-hook 'eglot-ensure)
-(add-hook 'js-ts-mode-hook 'eglot-ensure)
-(add-hook 'dockerfile-ts-mode-hook 'eglot-ensure)
-(add-hook 'haskell-mode-hook 'eglot-ensure)
-(add-hook 'yaml-ts-mode-hook 'eglot-ensure)
-(add-hook 'python-ts-mode-hook 'eglot-ensure)
-(add-hook 'csharp-mode-hook 'eglot-ensure)
-(add-hook 'go-ts-mode-hook 'eglot-ensure)
-(add-hook 'html-mode-hook 'eglot-ensure)
+;; Setup Eldoc Box
+(use-package eldoc-box
+  :ensure t
+  :hook
+  (eglot-managed-mode . eldoc-box-hover-at-point-mode))
 
-;; auto format on save
-(add-hook 'before-save-hook 'eglot-format-buffer)
+;; Company Mode
+(use-package company
+  :ensure t
+  :hook
+  (after-init . global-company-mode))
 
-;; company mode
-(add-hook 'after-init-hook 'global-company-mode)
+;; Setup Copilot
+(use-package copilot
+  :ensure t
+  :hookx
+  (prog-mode . copilot-mode)
+  :config
+  ;; Set the keybinding for accepting copilot suggestions
+  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
 
-;; enable eldoc-box
-(require 'eldoc-box)
-(add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
+;; Treemacs Setup
+(use-package treemacs
+  :ensure t
+  :bind
+  (("s-T" . treemacs)
+   ("s-C" . treemacs-add-and-display-current-project-exclusively))
+  :config
+  (setq treemacs-follow-mode t)
+  (add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1))))
 
-;; enable copilot
-(require 'copilot)
-(add-hook 'prog-mode-hook 'copilot-mode)
-(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+;; Treemacs Nerd Icons
+(use-package nerd-icons
+  :ensure t)
+(use-package treemacs-nerd-icons
+  :ensure t
+  :after treemacs
+  :config
+  (treemacs-load-theme "nerd-icons"))
 
-;; treemacs setup
-(global-set-key (kbd "s-T") 'treemacs)
-(global-set-key (kbd "s-C") 'treemacs-add-and-display-current-project-exclusively)
-(setq treemacs-follow-mode t)
-(add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1)))
+;; Vterm Setup
+(use-package vterm
+  :ensure t
+  :config
+  (add-hook 'vterm-mode-hook (lambda() (display-line-numbers-mode -1))))
 
-;; nerd icons
-(require 'nerd-icons)
-(require 'treemacs-nerd-icons)
-(treemacs-load-theme "nerd-icons")
+(use-package vterm-toggle
+  :ensure t
+  :bind
+  (("<f2>" . vterm-toggle)))
 
-;; vterm
-(require 'vterm)
-(add-hook 'vterm-mode-hook (lambda() (display-line-numbers-mode -1)))
-;; vterm toggle
-(global-set-key [f2] 'vterm-toggle)
-
-;;paredit
-(require 'paredit)
-(autoload 'enable-paredit-mode "paredit" "Turn on psuedo-structural editing of lisp code" t)
-(add-hook 'emacs-lisp-mode-hook                  #'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-(add-hook 'lisp-mode-hook                        #'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook            #'enable-paredit-mode)
-(add-hook 'scheme-mode-hook                      #'enable-paredit-mode)
-(add-hook 'rust-ts-mode-hook                     #'enable-paredit-mode)
-(add-hook 'go-ts-mode                            #'enable-paredit-mode)
+;; Paredit Mode
+(use-package paredit
+  :ensure t
+  :hook
+  ((emacs-lisp-mode
+    eval-expression-minibuffer-setup
+    lisp-mode
+    lisp-interaction-mode
+    scheme-mode) . paredit-mode))
 
 ;; web development
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
@@ -159,7 +158,11 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . tsx-ts-mode))
 
-(add-hook 'html-mode-hook 'emmet-mode)
+;; Emmet Mode
+(use-package emmet-mode
+  :ensure t
+  :hook
+  (html-mode . emmet-mode))
 
 ;; other file extension mode mapping
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
@@ -191,19 +194,33 @@
 (global-set-key (kbd "M-<up>") 'move-line-up)
 (global-set-key (kbd "M-<down>") 'move-line-down)
 
-;; Blamer
-(require 'blamer)
-(with-eval-after-load 'blamer
+;; Setup Blamer
+(use-package blamer
+  :ensure t
+  :config
+  (global-blamer-mode 1)
   (set-face-attribute 'blamer-face nil
                       :inherit 'font-lock-comment-face
                       :italic t))
-(global-blamer-mode 1)
 
 ;; Org Agenda custmization
-(global-set-key (kbd "C-c a") 'org-agenda)
-(setq org-log-done t)
+(use-package org
+  ;; No ensure is needed as org is built-in
+  :bind
+  (("C-c a" . org-agenda))
+  :config
+  (setq org-directory "~/Documents/org")
+  (setq org-agenda-files (list org-directory))
+  (setq org-log-done t))
 
 ;; load theme
-(load-theme 'catppuccin :no-confirm)
-(solaire-global-mode t)
+(use-package catppuccin-theme
+  :ensure t
+  :config
+  (load-theme 'catppuccin :no-confirm))
+
+(use-package solaire-mode
+  :ensure t
+  :hook
+  (after-init . solaire-global-mode))
 
