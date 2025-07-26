@@ -4,9 +4,6 @@
 ;; disable tools on startup
 (tool-bar-mode -1)
 
-;; Disable scroll bar on startup
-(toggle-scroll-bar -1)
-
 ;; hide welcome screen
 (setq inhibit-splash-screen t)
 
@@ -44,6 +41,17 @@
 ;; activate packages
 (package-initialize)
 
+;; load theme
+(use-package catppuccin-theme
+  :ensure t
+  :init
+  (load-theme 'catppuccin :no-confirm))
+
+(use-package solaire-mode
+  :ensure t
+  :init
+  (solaire-global-mode 1))
+
 ;; All the icons
 (use-package all-the-icons
   :ensure t)
@@ -74,7 +82,7 @@
   :hook
   ((rust-ts-mode
     bash-ts-mode
-    emcas-lisp-mode
+    emacs-lisp-mode
     c-ts-mode
     c++-ts-mode
     cmake-ts-mode
@@ -105,7 +113,7 @@
 ;; Setup Copilot
 (use-package copilot
   :ensure t
-  :hookx
+  :hook
   (prog-mode . copilot-mode)
   :config
   ;; Set the keybinding for accepting copilot suggestions
@@ -120,7 +128,10 @@
    ("s-C" . treemacs-add-and-display-current-project-exclusively))
   :config
   (setq treemacs-follow-mode t)
-  (add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1))))
+  (add-hook 'treemacs-mode-hook
+            (lambda()
+              (display-line-numbers-mode -1)
+              (toggle-scroll-bar -1))))
 
 ;; Treemacs Nerd Icons
 (use-package nerd-icons
@@ -135,7 +146,10 @@
 (use-package vterm
   :ensure t
   :config
-  (add-hook 'vterm-mode-hook (lambda() (display-line-numbers-mode -1))))
+  (add-hook 'vterm-mode-hook
+            (lambda()
+              (display-line-numbers-mode -1)
+              (toggle-scroll-bar -1))))
 
 (use-package vterm-toggle
   :ensure t
@@ -212,15 +226,4 @@
   (setq org-directory "~/Documents/org")
   (setq org-agenda-files (list org-directory))
   (setq org-log-done t))
-
-;; load theme
-(use-package catppuccin-theme
-  :ensure t
-  :config
-  (load-theme 'catppuccin :no-confirm))
-
-(use-package solaire-mode
-  :ensure t
-  :hook
-  (after-init . solaire-global-mode))
 
