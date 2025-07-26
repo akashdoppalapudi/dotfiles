@@ -9,18 +9,18 @@
 
     "height": 15,
 
-    "margin-left": 10,
+    "margin-left": 5,
     "margin-bottom": 0,
-    "margin-right": 10,
+    "margin-right": 5,
 
-    "spacing": 5, // Gaps between modules (4px)
+    "spacing": 3, // Gaps between modules (4px)
 
     "modules-left": [
         //"custom/rofi",
         "hyprland/workspaces",
         //"hyprland/submap",
         "temperature",
-        //"idle_inhibitor",
+        "idle_inhibitor",
         //"mpd"
         "custom/spotify"
     ],
@@ -222,7 +222,7 @@
     },
 
     "clock#date": {
-        "format": "󰥔  {:%H:%M \n %e %b}",
+        "format": "󰥔  {:%H:%M \t %e %b}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "today-format": "<b>{}</b>"
     },
