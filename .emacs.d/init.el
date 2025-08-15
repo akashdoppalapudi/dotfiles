@@ -1,36 +1,3 @@
-;; disable menu on startup
-(menu-bar-mode -1)
-
-;; disable tools on startup
-(tool-bar-mode -1)
-
-;; hide welcome screen
-(setq inhibit-splash-screen t)
-
-;; disable backup and lockfiles
-(setq make-backup-files nil)
-(setq create-lockfiles nil)
-
-;; set font
-(set-face-attribute 'default nil :font "FiraCode Nerd Font" :height 120)
-
-;; enable line numbers and column number
-(global-display-line-numbers-mode t)
-(setq column-number-mode t)
-
-;; set tab width to 4 spaces
-(setq-default tab-width 4)
-
-;; insert spaces instead of tabs
-(setq-default indent-tabs-mode nil)
-
-;; set word-wrap
-(setq word-wrap t)
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
-
-;; save command-history
-(savehist-mode)
-
 ;; setup melpa
 (require 'package)
 (setq package-archives
@@ -38,22 +5,91 @@
         ("gnu" . "https://elpa.gnu.org/packages/")
         ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 
-;; activate packages
+;; Initialize packages
 (package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
 
-;; load theme
+;; custom functions
+
+;; transpose lines
+(defun move-line-up ()
+  "Move up the current line."
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2)
+  (indent-according-to-mode))
+
+(defun move-line-down ()
+  "Move down the current line."
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+;; Core emacs configuration
+
+(use-package emacs
+  :init
+  (setq inhibit-startup-screen t) ; disable startup screen
+  (setq make-backup-files nil) ; disable backup files
+  (setq create-lockfiles nil) ; disable lock files
+  (setq native-comp-async-report-warnings-errors nil) ; suppress warnings
+
+  :config
+  (tool-bar-mode -1) ; disable tool bar
+  (menu-bar-mode -1) ; disable menu bar
+
+  ;; Font settings
+  (set-face-attribute 'default nil :font "FiraCode Nerd Font Mono" :height 120)
+
+  ;; Editor behavior
+  (setq-default tab-width 4)
+  (setq-default indent-tabs-mode nil)
+  (setq column-number-mode t)
+
+  (global-display-line-numbers-mode t) ; enable line numbers
+
+  :bind
+  (("M-<up>" . move-line-up)
+   ("M-<down>" . move-line-down)
+   ("C-c C-k" . comment-region)
+   ("C-c C-u" . uncomment-region)
+   ("C-c C-h" . eldoc)
+   ("C-c C-d" . xref-find-definitions)))
+
+;; External package configuration
+
+;; Load theme
 (use-package catppuccin-theme
   :ensure t
-  :init
+  :config
   (load-theme 'catppuccin :no-confirm))
 
 (use-package solaire-mode
   :ensure t
-  :init
+  :config
   (solaire-global-mode 1))
 
-;; All the icons
-(use-package all-the-icons
+;; Git Blame
+(use-package blamer
+  :ensure t
+  :after catppuccin-theme
+  :config
+  (set-face-attribute 'blamer-face nil
+                      :inherit 'font-lock-comment-face
+                      :italic t)
+  (global-blamer-mode 1))
+
+;; Save Command History
+(use-package savehist
+  :ensure t
+  :config
+  (savehist-mode 1))
+
+;; Magit
+(use-package magit
   :ensure t)
 
 ;; Centaur Tabs
@@ -61,10 +97,75 @@
   :ensure t
   :config
   (centaur-tabs-mode t)
-  (setq centaur-tabs-set-icons t)
-  (setq centaur-tabs-plain-icons t)
-  (setq centaur-tabs-set-modified-marker t)
-  (setq centaur-tabs-height 32))
+  :custom
+  (centaur-tabs-set-icons t)
+  (centaur-tabs-plain-icons t)
+  (centaur-tabs-set-modified-marker t)
+  (centaur-tabs-height 32))
+
+;; All the icons
+(use-package all-the-icons
+  :ensure t)
+
+;; Treemacs
+(use-package treemacs
+  :ensure t
+  :defer t
+  :bind
+  (("s-T" . treemacs)
+   ("s-C" . treemacs-add-and-display-current-project-exclusively))
+  :config
+  (setq treemacs-follow-mode t)
+  (add-hook 'treemacs-mode-hook
+            (lambda ()
+              (display-line-numbers-mode 0)
+              (set-window-scroll-bars (selected-window) nil nil))))
+
+;; Icons for Treemacs
+(use-package treemacs-all-the-icons
+  :ensure t
+  :after treemacs
+  :config
+  (treemacs-load-theme "all-the-icons"))
+
+;; Vterm Setup
+(use-package vterm
+  :ensure t
+  :config
+  (add-hook 'vterm-mode-hook
+            (lambda ()
+              (display-line-numbers-mode 0)
+              (set-window-scroll-bars (selected-window) nil nil))))
+
+(use-package vterm-toggle
+  :ensure t
+  :bind
+  (("<f2>" . vterm-toggle)))
+
+;; Snippets
+(use-package yasnippet
+  :ensure t)
+
+;; Company Mode
+(use-package company
+  :ensure t
+  :hook
+  (after-init . global-company-mode))
+
+;; Few Major modes for languages
+(use-package go-mode
+  :ensure t)
+
+(use-package rust-mode
+  :ensure t)
+
+;; other file extension mode mapping
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
+(add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-ts-mode))
+
+;; CMakelists.txt activate cmake-ts-mode
+(add-to-list 'auto-mode-alist '("CMakeLists.txt" . cmake-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-ts-mode))
 
 ;; remap major modes with treesitter modes
 (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
@@ -73,6 +174,16 @@
 (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode))
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 (add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
+
+;; Org Agenda customization
+(use-package org
+  ;; No ensure is needed as org is built-in
+  :bind
+  (("C-c a" . org-agenda))
+  :config
+  (setq org-directory "~/Documents/org")
+  (setq org-agenda-files (list org-directory))
+  (setq org-log-done t))
 
 ;; Setup Eglot
 (use-package eglot
@@ -104,68 +215,6 @@
   :hook
   (eglot-managed-mode . eldoc-box-hover-at-point-mode))
 
-;; Company Mode
-(use-package company
-  :ensure t
-  :hook
-  (after-init . global-company-mode))
-
-;; Setup Copilot
-(use-package copilot
-  :ensure t
-  :hook
-  (prog-mode . copilot-mode)
-  :config
-  ;; Set the keybinding for accepting copilot suggestions
-  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
-
-;; Treemacs Setup
-(use-package treemacs
-  :ensure t
-  :bind
-  (("s-T" . treemacs)
-   ("s-C" . treemacs-add-and-display-current-project-exclusively))
-  :config
-  (setq treemacs-follow-mode t)
-  (add-hook 'treemacs-mode-hook
-            (lambda()
-              (display-line-numbers-mode -1)
-              (toggle-scroll-bar -1))))
-
-;; Treemacs Nerd Icons
-(use-package nerd-icons
-  :ensure t)
-(use-package treemacs-nerd-icons
-  :ensure t
-  :after treemacs
-  :config
-  (treemacs-load-theme "nerd-icons"))
-
-;; Vterm Setup
-(use-package vterm
-  :ensure t
-  :config
-  (add-hook 'vterm-mode-hook
-            (lambda()
-              (display-line-numbers-mode -1)
-              (toggle-scroll-bar -1))))
-
-(use-package vterm-toggle
-  :ensure t
-  :bind
-  (("<f2>" . vterm-toggle)))
-
-;; Paredit Mode
-(use-package paredit
-  :ensure t
-  :hook
-  ((emacs-lisp-mode
-    eval-expression-minibuffer-setup
-    lisp-mode
-    lisp-interaction-mode
-    scheme-mode) . paredit-mode))
-
 ;; web development
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
@@ -178,52 +227,17 @@
   :hook
   (html-mode . emmet-mode))
 
-;; other file extension mode mapping
-(add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
-(add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-ts-mode))
-
-;; CMakelists.txt activate cmake-ts-mode
-(add-to-list 'auto-mode-alist '("CMakeLists.txt" . cmake-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-ts-mode))
-
-;; Code action keybindings
-(global-set-key (kbd "C-c C-k") 'comment-region)
-(global-set-key (kbd "C-c C-u") 'uncomment-region)
-(global-set-key (kbd "C-c C-h") 'eldoc)
-(global-set-key (kbd "C-c C-d") 'xref-find-definitions)
-
-;; transpose lines
-(defun move-line-up ()
-  (interactive)
-  (transpose-lines 1)
-  (previous-line 2))
-
-(defun move-line-down ()
-  (interactive)
-  (next-line 1)
-  (transpose-lines 1)
-  (previous-line 1))
-
-;; Keybindings for moving lines up/down
-(global-set-key (kbd "M-<up>") 'move-line-up)
-(global-set-key (kbd "M-<down>") 'move-line-down)
-
-;; Setup Blamer
-(use-package blamer
+;; Setup Copilot
+(use-package copilot
   :ensure t
+  :hook
+  (prog-mode . copilot-mode)
   :config
-  (global-blamer-mode 1)
-  (set-face-attribute 'blamer-face nil
-                      :inherit 'font-lock-comment-face
-                      :italic t))
+  ;; Set the keybinding for accepting copilot suggestions
+  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
 
-;; Org Agenda custmization
-(use-package org
-  ;; No ensure is needed as org is built-in
-  :bind
-  (("C-c a" . org-agenda))
-  :config
-  (setq org-directory "~/Documents/org")
-  (setq org-agenda-files (list org-directory))
-  (setq org-log-done t))
 
+;; Prevent Emacs from writing customizations to this file.
+;; All configuration should be managed with use-package.
+(setq custom-file (make-temp-file "emacs-custom-"))

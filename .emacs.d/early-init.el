@@ -1,6 +1,5 @@
 ;; Load the screen in dark mode
 (set-face-background 'default "#1E1D2F")
-(set-face-foreground 'default "#24273A")
 
 ;; start the initial frame maximized
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
