@@ -28,6 +28,15 @@
   (forward-line -1)
   (indent-according-to-mode))
 
+(defun my/toggle-eat-other-window ()
+  "Show *eat* in the other window, or hide it if it's already visible."
+  (interactive)
+  (let* ((buf   (get-buffer-create "*eat*"))
+         (win   (get-buffer-window buf)))
+    (if win
+        (delete-window win)
+      (eat-other-window))))
+
 ;; Core emacs configuration
 
 (use-package emacs
@@ -128,19 +137,15 @@
   :config
   (treemacs-load-theme "all-the-icons"))
 
-;; Vterm Setup
-(use-package vterm
+;; Eat Setup
+(use-package eat
   :ensure t
-  :config
-  (add-hook 'vterm-mode-hook
-            (lambda ()
-              (display-line-numbers-mode 0)
-              (set-window-scroll-bars (selected-window) nil nil))))
-
-(use-package vterm-toggle
-  :ensure t
+  :hook
+  (eat-mode . (lambda ()
+                (display-line-numbers-mode 0)
+                (set-window-scroll-bars (selected-window) nil nil)))
   :bind
-  (("<f2>" . vterm-toggle)))
+  (("C-`" . my/toggle-eat-other-window)))
 
 ;; Snippets
 (use-package yasnippet
@@ -157,6 +162,10 @@
   :ensure t)
 
 (use-package rust-mode
+  :ensure t)
+
+;; Fountain mode for script writing
+(use-package fountain-mode
   :ensure t)
 
 ;; other file extension mode mapping
