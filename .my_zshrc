@@ -4,7 +4,7 @@
 ##################################################
 
 # Aliases
-alias pubip="curl https://ip.theakash.dev"
+alias pubip="curl icanhazip.com"
 
 # Exports
 export PGPFP="C8B2A95D8D855A9D8C6F0C78BCBCAE31ECE05007"
