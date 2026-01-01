@@ -164,6 +164,9 @@
 (use-package rust-mode
   :ensure t)
 
+(use-package zig-mode
+  :ensure t)
+
 ;; Fountain mode for script writing
 (use-package fountain-mode
   :ensure t)
@@ -215,7 +218,8 @@
     python-ts-mode
     csharp-mode
     go-ts-mode
-    html-mode) . eglot-ensure)
+    html-mode
+    zig-mode) . eglot-ensure)
   (before-save-hook . eglot-format-buffer))
 
 ;; Setup Eldoc Box
