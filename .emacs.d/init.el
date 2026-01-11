@@ -91,6 +91,14 @@
                       :italic t)
   (global-blamer-mode 1))
 
+;; Multiple Cursors
+(use-package multiple-cursors
+  :ensure t
+  :bind
+  (("C->" . mc/mark-next-like-this)
+   ("C-<" . mc/mark-previous-like-this)
+   ("C-c C-<" . mc/mark-all-like-this)))
+
 ;; Save Command History
 (use-package savehist
   :ensure t
