@@ -81,48 +81,31 @@
   :config
   (solaire-global-mode 1))
 
-;; Git Blame
-(use-package blamer
-  :ensure t
-  :after catppuccin-theme
-  :config
-  (set-face-attribute 'blamer-face nil
-                      :inherit 'font-lock-comment-face
-                      :italic t)
-  (global-blamer-mode 1))
-
-;; Multiple Cursors
-(use-package multiple-cursors
-  :ensure t
-  :bind
-  (("C->" . mc/mark-next-like-this)
-   ("C-<" . mc/mark-previous-like-this)
-   ("C-c C-<" . mc/mark-all-like-this)))
-
 ;; Save Command History
 (use-package savehist
   :ensure t
   :config
   (savehist-mode 1))
 
-;; Magit
-(use-package magit
-  :ensure t)
+;; All the icons
+(use-package all-the-icons
+  :ensure t
+  :if (display-graphic-p)
+  :config
+  (unless (find-font (font-spec :name "all-the-icons"))
+    (all-the-icons-install-fonts)))
 
 ;; Centaur Tabs
 (use-package centaur-tabs
   :ensure t
+  :demand
   :config
   (centaur-tabs-mode t)
   :custom
+  (centaur-tabs-height 32)
   (centaur-tabs-set-icons t)
-  (centaur-tabs-plain-icons t)
-  (centaur-tabs-set-modified-marker t)
-  (centaur-tabs-height 32))
-
-;; All the icons
-(use-package all-the-icons
-  :ensure t)
+  (centaur-tabs-icon-type 'all-the-icons)
+  (centaur-tabs-set-modified-marker t))
 
 ;; Treemacs
 (use-package treemacs
@@ -141,9 +124,31 @@
 ;; Icons for Treemacs
 (use-package treemacs-all-the-icons
   :ensure t
-  :after treemacs
+  :after (treemacs all-the-icons)
   :config
   (treemacs-load-theme "all-the-icons"))
+
+;; Git Blame
+(use-package blamer
+  :ensure t
+  :after catppuccin-theme
+  :config
+  (set-face-attribute 'blamer-face nil
+                      :inherit 'font-lock-comment-face
+                      :italic t)
+  (global-blamer-mode 1))
+
+;; Multiple Cursors
+(use-package multiple-cursors
+  :ensure t
+  :bind
+  (("C->" . mc/mark-next-like-this)
+   ("C-<" . mc/mark-previous-like-this)
+   ("C-c C-<" . mc/mark-all-like-this)))
+
+;; Magit
+(use-package magit
+  :ensure t)
 
 ;; Eat Setup
 (use-package eat
